@@ -1,17 +1,40 @@
-import express, { response } from 'express'
+import express from 'express'
 import cors from 'cors'
+import mongoose from 'mongoose'
 
 const students = [
-    {name: 'Lachie', id: 1, assessments: [1]}, 
-    {name: 'Argine', id: 2, assessments: [2]}, 
-    {name: 'Max', id: 3, assessments: [3]}
+    {name: 'Lachie', assessments: [1]}, 
+    {name: 'Argine', assessments: [2]}, 
+    {name: 'Max', assessments: [3]}
 ]
 
-const users = []
+const users = [
+    {username: 'eliteadmin', password: 'spameggs', name: 'Adam Minister', isAdmin: true},
+    {username: 'elitecoach', password: 'foobar', name: 'Jay Son', isAdmin: false}
+]
 
-const skills = []
+const skills = [
+    {skillname: 'jump', level: 1},
+    {skillname: 'handstand', level: 2},
+    {skillname: 'somersault', level: 3},
+    {skillname: 'backflip', level: 4},
+]
 
-const assessments = []
+const assessments = [
+    {student: 'Lachie', date: datetime.now(), doneBy: 'elitecoach', isComplete: true, skills: [{skillname: 'jump', score: 2}, {skillname: 'handstand', score: 2}]},
+    {student: 'Argine', date: datetime.now(), doneBy: 'elitecoach', isComplete: true, skills: [{skillname: 'somersault', score: 4}, {skillname: 'backflip', score: 3}]},
+]
+
+mongoose.connect('mongodb+srv://tumbleadmin:hs8TRClUyVbQDILG@tumbletracker.jdvxsli.mongodb.net/?retryWrites=true&w=majority')
+    .then(m => console.log(m.connection.readyState === 1 ? 'Mongoose connected!' : 'Mongoose failed'))
+    .catch(err => console.error(err))
+
+const studentsSchema = new mongoose.Schema({
+    name: {type: String, required: true},
+    assessments: {type: Array}
+})
+
+const StudentModel = mongoose.model('Student', studentsSchema)
 
 const app = express()
 const port = 4001
