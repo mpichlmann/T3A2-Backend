@@ -1,7 +1,12 @@
 import mongoose from 'mongoose'
+dotenv.config()
 import dotenv from 'dotenv'
 
-mongoose.connect('mongodb+srv://tumbleadmin:hs8TRClUyVbQDILG@tumbletracker.jdvxsli.mongodb.net/tumbletracker?retryWrites=true&w=majority')
+async function dbClose() {
+    await mongoose.connection.close()
+    console.log('db closed')}
+
+mongoose.connect(process.env.ATLAS_DB_URL)
     .then(m => console.log(m.connection.readyState === 1 ? 'Mongoose connected!' : 'Mongoose failed'))
     .catch(err => console.error(err))
 
@@ -29,8 +34,8 @@ const assessmentSchema = new mongoose.Schema({
     student: {type: String, required: true},
     doneBy: {type: String, required: true},
     isCompleted: {type: Boolean, required: true},
-    skills: {type: Array, required: true}
+    skills: [{type: Array, required: true}]
 })
 const AssessmentModel = mongoose.model('Assessment', assessmentSchema)
 
-export { StudentModel, UserModel, SkillModel, AssessmentModel } 
+export { StudentModel, UserModel, SkillModel, AssessmentModel, dbClose } 
