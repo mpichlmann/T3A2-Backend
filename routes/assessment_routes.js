@@ -49,13 +49,13 @@ router.get('/student/:studentId', async (req, res) => {
             .populate('skills.skill', 'skillName');
         
         if (assessments.length > 0) {
-            res.send(assessments);
+            res.send(assessments)
         } else {
-            res.status(404).send({ error: 'No assessments found for the specified student' });
+            res.status(404).send({ error: 'No assessments found for the specified student' })
         }
     } catch (err) {
-        res.status(500).send({ error: err.message });
+        res.status(500).send({ error: err.message })
     }
-});
+})
 
 export default router

@@ -1,47 +1,106 @@
-import { StudentModel, UserModel, SkillModel, AssessmentModel, dbClose } from './db.js'
+import { StudentModel, UserModel, SkillModel, AssessmentModel, dbClose } from './db.js';
 
-const assessments = [
-    {student: 'Lachie', doneBy: 'elitecoach', isCompleted: true, skills: [{skillname: 'jump', score: 1}, {skillname: 'handstand', score: 2}]},
-    {student: 'Argine', doneBy: 'elitecoach', isCompleted: true, skills: [{skillname: 'somersault', score: 4}, {skillname: 'backflip', score: 3}]},
-    {student: 'Max', doneBy: 'elitecoach', isCompleted: true, skills: [{skillsname: 'jump', score: 1}, {skillname: 'backflip', score: 1}]},
-]
-await AssessmentModel.deleteMany()
-console.log('deleted assessments')
-const as = await AssessmentModel.insertMany(assessments)
-console.log('assessments seeded')
+const seedData = async () => {
+    try {
+        await AssessmentModel.deleteMany();
+        console.log('Deleted assessments');
 
+        await StudentModel.deleteMany();
+        console.log('Deleted students');
 
-const students = [
-    {name: 'Lachie', DOB: 9/4/1996, skillLevel: 3}, 
-    {name: 'Argine', DOB: 1/1/1994, skillLevel: 6}, 
-    {name: 'Max', DOB: 7/4/1996, skillLevel: 1}, 
-]
+        await UserModel.deleteMany();
+        console.log('Deleted users');
 
-await StudentModel.deleteMany()
-console.log('deleted categories')
-const st = await StudentModel.insertMany(students)
-console.log('students seeded')
+        await SkillModel.deleteMany();
+        console.log('Deleted skills');
 
-const users = [
-    {username: 'eliteadmin', password: 'spameggs', name: 'Adam Minister', isAdmin: true},
-    {username: 'elitecoach', password: 'foobar', name: 'Jay Son', isAdmin: false}
-]
-await UserModel.deleteMany()
-console.log('deleted users')
-const us = await UserModel.insertMany(users)
-console.log('users seeded')
+        const skillslist = [
+            { skillName: 'jump', level: 1 },
+            { skillName: 'handstand', level: 2 },
+            { skillName: 'somersault', level: 3 },
+            { skillName: 'backflip', level: 4 }
+        ];
+        const sk = await SkillModel.insertMany(skillslist);
+        console.log('Skills seeded');
 
-const skillslist = [
-    {skillname: 'jump', level: 1},
-    {skillname: 'handstand', level: 2},
-    {skillname: 'somersault', level: 3},
-    {skillname: 'backflip', level: 4},
-]
-await SkillModel.deleteMany()
-console.log('deleted skills')
-const sk = await SkillModel.insertMany(skillslist)
-console.log('skills seeded')
+        const users = [
+            { username: 'eliteadmin', password: 'spameggs', name: 'Adam Minister', isAdmin: true },
+            { username: 'elitecoach', password: 'foobar', name: 'Jay Son', isAdmin: false }
+        ];
+        const us = await UserModel.insertMany(users);
+        console.log('Users seeded');
 
+        const students = [
+            { name: 'Lachie', DOB: new Date('1996-09-04'), skillLevel: 3 },
+            { name: 'Argine', DOB: new Date('1994-01-01'), skillLevel: 6 },
+            { name: 'Max', DOB: new Date('1996-07-04'), skillLevel: 1 }
+        ];
+        const st = await StudentModel.insertMany(students);
+        console.log('Students seeded');
 
+        const assessments = [
+            {
+                student: st.find(student => student.name === 'Lachie')._id,
+                doneBy: (await UserModel.findOne({ username: 'elitecoach' }))._id,
+                isCompleted: true,
+                skills: [
+                    { skill: (await SkillModel.findOne({ skillName: 'jump' }))._id, score: 1 },
+                    { skill: (await SkillModel.findOne({ skillName: 'handstand' }))._id, score: 2 }
+                ]
+            },
+            {
+                student: st.find(student => student.name === 'Argine')._id,
+                doneBy: (await UserModel.findOne({ username: 'elitecoach' }))._id,
+                isCompleted: true,
+                skills: [
+                    { skill: (await SkillModel.findOne({ skillName: 'somersault' }))._id, score: 4 },
+                    { skill: (await SkillModel.findOne({ skillName: 'backflip' }))._id, score: 3 }
+                ]
+            },
+            {
+                student: st.find(student => student.name === 'Max')._id,
+                doneBy: (await UserModel.findOne({ username: 'elitecoach' }))._id,
+                isCompleted: true,
+                skills: [
+                    { skill: (await SkillModel.findOne({ skillName: 'jump' }))._id, score: 1 },
+                    { skill: (await SkillModel.findOne({ skillName: 'backflip' }))._id, score: 1 }
+                ]
+            },
+            {
+                student: st.find(student => student.name === 'Lachie')._id,
+                doneBy: (await UserModel.findOne({ username: 'elitecoach' }))._id,
+                isCompleted: true,
+                skills: [
+                    { skill: (await SkillModel.findOne({ skillName: 'backflip' }))._id, score: 3 },
+                    { skill: (await SkillModel.findOne({ skillName: 'somersault' }))._id, score: 4 }
+                ]
+            },
+            {
+                student: st.find(student => student.name === 'Argine')._id,
+                doneBy: (await UserModel.findOne({ username: 'elitecoach' }))._id,
+                isCompleted: true,
+                skills: [
+                    { skill: (await SkillModel.findOne({ skillName: 'jump' }))._id, score: 3 },
+                    { skill: (await SkillModel.findOne({ skillName: 'handstand' }))._id, score: 3 }
+                ]
+            },
+            {
+                student: st.find(student => student.name === 'Max')._id,
+                doneBy: (await UserModel.findOne({ username: 'elitecoach' }))._id,
+                isCompleted: true,
+                skills: [
+                    { skill: (await SkillModel.findOne({ skillName: 'handstand' }))._id, score: 2 },
+                    { skill: (await SkillModel.findOne({ skillName: 'backflip' }))._id, score: 2 }
+                ]
+            }
+        ];
+        const as = await AssessmentModel.insertMany(assessments);
+        console.log('Assessments seeded');
+    } catch (error) {
+        console.error(error);
+    } finally {
+        dbClose();
+    }
+};
 
-dbClose()
+seedData();
