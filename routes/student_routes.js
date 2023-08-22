@@ -62,15 +62,15 @@ router.delete('/:id', checkAdminMiddleware, async (req, res) => {
 
 router.get('/search/:name', async (req, res) => {
     try {
-        const searchName = req.params.name;
+        const searchName = req.params.name
 
-        const students = await StudentModel.find({ name: { $regex: searchName, $options: 'i' } });
+        const students = await StudentModel.find({ name: { $regex: searchName, $options: 'i' } })
 
-        res.status(200).send(students);
+        res.status(200).send(students)
     } catch (error) {
-        res.status(500).send({ error: error.message });
+        res.status(500).send({ error: error.message })
     }
-});
+})
 
 
 export default router

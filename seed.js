@@ -12,9 +12,9 @@ console.log('assessments seeded')
 
 
 const students = [
-    {name: 'Lachie', assessments: assessments[0]}, 
-    {name: 'Argine', assessments: assessments[1]}, 
-    {name: 'Max', assessments: assessments[2]}, 
+    {name: 'Lachie', DOB: 9/4/1996, skillLevel: 3}, 
+    {name: 'Argine', DOB: 1/1/1994, skillLevel: 6}, 
+    {name: 'Max', DOB: 7/4/1996, skillLevel: 1}, 
 ]
 
 await StudentModel.deleteMany()

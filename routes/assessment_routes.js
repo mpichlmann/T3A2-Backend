@@ -40,4 +40,22 @@ router.post('/', async (req, res) => {
     }
 })
 
+// find assessments from a specific student
+router.get('/student/:studentId', async (req, res) => {
+    try {
+        const assessments = await AssessmentModel.find({ student: req.params.studentId })
+            .populate('student', 'name')
+            .populate('doneBy', 'username')
+            .populate('skills.skill', 'skillName');
+        
+        if (assessments.length > 0) {
+            res.send(assessments);
+        } else {
+            res.status(404).send({ error: 'No assessments found for the specified student' });
+        }
+    } catch (err) {
+        res.status(500).send({ error: err.message });
+    }
+});
+
 export default router
