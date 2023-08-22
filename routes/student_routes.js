@@ -8,7 +8,7 @@ router.get('/', async (req, res) => res.status(200).send(await StudentModel.find
 
 router.get('/:id', async (req, res) => {
     try {
-        const student = await StudentModel.findById(req.params.id)
+        const student = await StudentModel.findById(req.params.id).populate()
         if (student) {
             res.send(student)
         } else {
@@ -30,7 +30,7 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', checkAdminMiddleware, async (req, res) => {
     try {
         const student = await StudentModel.findByIdAndUpdate(req.params.id, req.body, {new: true })
         if (student) {
@@ -56,5 +56,21 @@ router.delete('/:id', checkAdminMiddleware, async (req, res) => {
         res.status(500).send({ error: err.message })
     }
 })
+
+
+// Search for students 
+
+router.get('/search/:name', async (req, res) => {
+    try {
+        const searchName = req.params.name;
+
+        const students = await StudentModel.find({ name: { $regex: searchName, $options: 'i' } });
+
+        res.status(200).send(students);
+    } catch (error) {
+        res.status(500).send({ error: error.message });
+    }
+});
+
 
 export default router

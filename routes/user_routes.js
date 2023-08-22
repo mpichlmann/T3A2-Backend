@@ -29,16 +29,5 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.post('/', async (req, res) => {
-    try {
-        const insertedUser = await UserModel.create(req.body)
-        res.status(201).send(insertedUser)
-    } 
-    catch (err) {
-        res.status(500).send({ error: err.message })
-    }
-})
-
-
 
 export default router

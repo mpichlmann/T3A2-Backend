@@ -15,7 +15,7 @@ mongoose.connect(process.env.ATLAS_DB_URL)
 
 const studentSchema = new mongoose.Schema({
     name: {type: String, required: true},
-    assessments: {type: Array}
+    assessments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Assessment' }]
 })
 const StudentModel = mongoose.model('Student', studentSchema)
 
@@ -40,10 +40,10 @@ const skillSchema = new mongoose.Schema({
 const SkillModel = mongoose.model('Skill', skillSchema)
 
 const assessmentSchema = new mongoose.Schema({
-    student: {type: String, required: true},
-    doneBy: {type: String, required: true},
+    student: { type: mongoose.Schema.Types.ObjectId, ref: 'Student', required: true },
+    doneBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     isCompleted: {type: Boolean, required: true},
-    skills: [{type: Array, required: true}]
+    skills: [{ skill: { type: mongoose.Schema.Types.ObjectId, ref: 'Skill' }, score: Number }]
 })
 const AssessmentModel = mongoose.model('Assessment', assessmentSchema)
 
