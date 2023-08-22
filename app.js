@@ -3,6 +3,7 @@ import { AssessmentModel, StudentModel } from './db.js'
 import cors from 'cors'
 import studentRoutes from './routes/student_routes.js'
 import userRoutes from './routes/user_routes.js'
+import authRoutes from './routes/auth.js'
 
 const app = express()
 
@@ -17,5 +18,7 @@ app.get('/assessments', async (req, res) => res.status(200).send(await Assessmen
 app.use('/students', studentRoutes)
 
 app.use('/users', userRoutes)
+
+app.use('/auth', authRoutes)
 
 export default app

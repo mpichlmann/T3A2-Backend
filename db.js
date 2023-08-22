@@ -1,6 +1,9 @@
 import mongoose from 'mongoose'
 dotenv.config()
 import dotenv from 'dotenv'
+import bcrypt from 'bcrypt'
+
+const saltRounds = 10
 
 async function dbClose() {
     await mongoose.connection.close()
@@ -22,6 +25,12 @@ const userSchema = new mongoose.Schema({
     name: {type: String, required: true},
     isAdmin: {type: Boolean, required: true}
 })
+
+userSchema.methods.comparePassword = async function(candidatePassword) {
+    return this.password === candidatePassword
+    }
+
+
 const UserModel = mongoose.model('User', userSchema)
 
 const skillSchema = new mongoose.Schema({
