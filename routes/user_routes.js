@@ -29,16 +29,19 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.post('/', async (req, res) => {
+
+// Search for users 
+
+router.get('/search/:name', async (req, res) => {
     try {
-        const insertedUser = await UserModel.create(req.body)
-        res.status(201).send(insertedUser)
-    } 
-    catch (err) {
-        res.status(500).send({ error: err.message })
+        const searchName = req.params.name
+
+        const users = await UserModel.find({ name: { $regex: searchName, $options: 'i' } })
+
+        res.status(200).send(users)
+    } catch (error) {
+        res.status(500).send({ error: error.message })
     }
 })
-
-
 
 export default router
