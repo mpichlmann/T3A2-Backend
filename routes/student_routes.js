@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import { StudentModel } from '../db.js'
+import { checkAdminMiddleware } from './admin.js'
 
 const router = Router()
 
@@ -43,7 +44,7 @@ router.put('/:id', async (req, res) => {
     }
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', checkAdminMiddleware, async (req, res) => {
     try {
         const student = await StudentModel.findByIdAndDelete(req.params.id)
         if (student) {
