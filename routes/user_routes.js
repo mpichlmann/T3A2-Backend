@@ -6,8 +6,10 @@ const saltRounds = 10
 
 const router = Router()
 
+// Get all users
 router.get('/', async (req, res) => res.status(200).send(await UserModel.find()))
 
+// Get a specific user
 router.get('/:id', async (req, res) => {
     try {
         const user = await UserModel.findById(req.params.id)
@@ -16,8 +18,7 @@ router.get('/:id', async (req, res) => {
         } else {
             res.status(404).send({ error: 'Student not found'})
         }
-    }
-    catch (err) {
+    } catch (err) {
         res.status(500).send({ error: err.message} )
     } 
 })
@@ -27,18 +28,13 @@ router.get('/:id', async (req, res) => {
 router.post('/', checkAdminMiddleware, async (req, res) => {
     try {
         const { username, password, name, isAdmin } = req.body;
-
-        // Hash the password
         const hashedPassword = await bcrypt.hash(password, saltRounds)
-
-        // Create the new user with the hashed password
         const newUser = await UserModel.create({
             username,
             password: hashedPassword,
             name,
             isAdmin
         })
-
         res.status(201).send(newUser)
     } catch (err) {
         res.status(500).send({ error: err.message })
@@ -46,7 +42,6 @@ router.post('/', checkAdminMiddleware, async (req, res) => {
 })
 
 // Search for users 
-
 router.get('/search/:name', async (req, res) => {
     try {
         const searchName = req.params.name
@@ -59,6 +54,33 @@ router.get('/search/:name', async (req, res) => {
     }
 })
 
-export default router
+// Edit a user 
+router.put('/:id', checkAdminMiddleware, async (req, res) => {
+    try {
+        const user = await UserModel.findByIdAndUpdate(req.params.id, req.body, {new: true })
+        if (user) {
+            user.save()
+            res.send(user)
+        } else {
+            res.status(404).send({ error: 'User not found'})
+    }
+    } catch (err) {
+        res.status(500).send({ error: err.message })
+    }
+})
 
-// test
+// Delete a user 
+router.delete('/:id', checkAdminMiddleware, async (req, res) => {
+    try {
+        const user = await UserModel.findByIdAndDelete(req.params.id)
+        if (user) {
+            res.status(200).send({ message: 'User deleted successfully' })
+        } else {
+            res.status(404).send({ error: 'User not found' })
+        }
+    } catch (err) {
+        res.status(500).send({ error: err.message })
+    }
+})
+
+export default router

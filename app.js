@@ -20,6 +20,6 @@ app.use('/students', studentRoutes)
 
 app.use('/users', userRoutes)
 
-app.use('/auth', authRoutes)
+app.use('/login', authRoutes)
 
 export default app
