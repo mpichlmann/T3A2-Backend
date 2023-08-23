@@ -22,11 +22,14 @@ router.post('/', async (req, res) => {
 
         const accessToken = jwt.sign({ userId: user._id, isAdmin: user.isAdmin, name: user.name }, process.env.ACCESS_TOKEN_SECRET)
 
-        res.json({ user, accessToken })
+        const { password: excludedPassword, ...userWithoutPassword } = user.toObject()
+        res.send({ user: userWithoutPassword, accessToken })
+
     } catch (error) {
         console.error(error)
         res.status(500).json({ message: 'An error occurred while processing your request' })
     }
+    
 })
 
 export default router
