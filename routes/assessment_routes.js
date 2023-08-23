@@ -3,6 +3,7 @@ import { AssessmentModel } from '../db.js'
 
 const router = Router()
 
+// 
 router.get('/', async (req, res) => {
     try {
         const assessments = await AssessmentModel.find()
@@ -12,6 +13,7 @@ router.get('/', async (req, res) => {
     }
 })
 
+// Get a specific assessment
 router.get('/:id', async (req, res) => {
     try {
         const assessment = await AssessmentModel.findById(req.params.id)
@@ -29,6 +31,7 @@ router.get('/:id', async (req, res) => {
     } 
 })
 
+// Create a new assessment
 router.post('/', async (req, res) => {
     try {
         const insertedAssessment = await AssessmentModel.create(req.body)

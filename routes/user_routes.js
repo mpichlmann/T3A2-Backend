@@ -23,7 +23,6 @@ router.get('/:id', async (req, res) => {
     } 
 })
 
-
 // Create a new user
 router.post('/', checkAdminMiddleware, async (req, res) => {
     try {
@@ -82,7 +81,6 @@ router.put('/:id', checkAdminMiddleware, async (req, res) => {
         res.status(500).send({ error: err.message })
     }
 })
-
 
 // Delete a user 
 router.delete('/:id', checkAdminMiddleware, async (req, res) => {
