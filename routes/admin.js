@@ -21,6 +21,6 @@ const checkAdminMiddleware = (req, res, next) => {
     } catch (error) {
       return res.status(500).json({ message: 'Failed to verify authorization token.' })
     }
-  };
+  }
   
 export { checkAdminMiddleware } 
