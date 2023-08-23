@@ -20,7 +20,11 @@ const seedData = async () => {
             { skillName: 'jump', level: 1 },
             { skillName: 'handstand', level: 2 },
             { skillName: 'somersault', level: 3 },
-            { skillName: 'backflip', level: 4 }
+            { skillName: 'backflip', level: 4 },
+            { skillName: 'double backflip', level: 4 },
+            { skillName: 'roll on the floor', level: 1 },
+            { skillName: 'cartwheel', level: 2 },
+            { skillName: 'explode', level: 3 }
         ]
         const sk = await SkillModel.insertMany(skillslist)
         console.log('Skills seeded')

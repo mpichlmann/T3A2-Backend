@@ -6,12 +6,11 @@ const router = Router()
 router.get('/', async (req, res) => {
     try {
         const assessments = await AssessmentModel.find()
-            
         res.status(200).send(assessments)
     } catch (error) {
-        res.status(500).send({ error: error.message });
+        res.status(500).send({ error: error.message })
     }
-});
+})
 
 router.get('/:id', async (req, res) => {
     try {
@@ -26,7 +25,7 @@ router.get('/:id', async (req, res) => {
         }
     }
     catch (err) {
-        res.status(500).send({ error: err.message} )
+        res.status(500).send({ error: err.message})
     } 
 })
 
@@ -36,7 +35,7 @@ router.post('/', async (req, res) => {
         res.status(201).send(insertedAssessment)
     } 
     catch (err) {
-        res.status(500).send({ error: err.message} )
+        res.status(500).send({ error: err.message})
     }
 })
 
@@ -46,7 +45,7 @@ router.get('/student/:studentId', async (req, res) => {
         const assessments = await AssessmentModel.find({ student: req.params.studentId })
             .populate('student', 'name')
             .populate('doneBy', 'username')
-            .populate('skills.skill', 'skillName');
+            .populate('skills.skill', 'skillName')
         
         if (assessments.length > 0) {
             res.send(assessments)
