@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import { AssessmentModel } from '../db.js'
+import { checkAdminMiddleware } from './admin.js'
 
 const router = Router()
 
@@ -30,17 +31,14 @@ router.post('/', async (req, res) => {
 // Get all assessments from a specific student
 router.get('/student', async (req, res) => {
     try {
-        const studentId = req.query.studentId; // Get the studentId from the query parameter
-        
+        const studentId = req.query.studentId
         if (!studentId) {
             return res.status(400).send({ error: 'Missing studentId parameter' })
         }
-
         const assessments = await AssessmentModel.find({ student: studentId })
             .populate('student', 'name')
             .populate('doneBy', 'username')
             .populate({path: 'skills.skill', select: 'skillName level'})
-        
         if (assessments.length > 0) {
             res.send(assessments)
         } else {
@@ -59,8 +57,6 @@ router.get('/student', async (req, res) => {
 //             .populate('student', 'name')
 //             .populate('doneBy', 'username')
 //             .populate('skills.skill', 'skillName')
-            
-        
 //         if (assessments.length > 0) {
 //             res.send(assessments)
 //         } else {
@@ -89,4 +85,35 @@ router.get('/:id', async (req, res) => {
     } 
 })
 
+// Update an assessment
+router.put('/:id', checkAdminMiddleware, async (req, res) => {
+    try {
+        const assessment = await AssessmentModel.findByIdAndUpdate(req.params.id, req.body, {new: true })
+            .populate('student', 'name') 
+            .populate('doneBy', 'username') 
+            .populate({path: 'skills.skill', select: 'skillName level'})
+        if (assessment) {
+            assessment.save()
+            res.send(assessment)
+        } else {
+            res.status(404).send({ error: 'Assessment not found'})
+    }
+    } catch (err) {
+        res.status(500).send({ error: err.message })
+    }
+}) 
+
+// Delete an assessment
+router.delete('/:id', checkAdminMiddleware, async (req, res) => {
+    try {
+        const assessment = await AssessmentModel.findByIdAndDelete(req.params.id)
+        if (assessment) {
+            res.status(200).send({ message: 'Assessment deleted successfully' })
+        } else {
+            res.status(404).send({ error: 'Assessment not found' })
+        }
+    } catch (err) {
+        res.status(500).send({ error: err.message })
+    }
+})
 export default router

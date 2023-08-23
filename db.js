@@ -11,7 +11,6 @@ mongoose.connect(process.env.ATLAS_DB_URL)
     .then(m => console.log(m.connection.readyState === 1 ? 'Mongoose connected!' : 'Mongoose failed'))
     .catch(err => console.error(err))
 
-
 // STUDENT SCHEMA/MODEL
 const studentSchema = new mongoose.Schema({
     name: {type: String, required: true},
@@ -27,15 +26,9 @@ const userSchema = new mongoose.Schema({
     name: {type: String, required: true},
     isAdmin: {type: Boolean, required: true}
 })
-// userSchema.methods.comparePassword = async function(candidatePassword) {
-//     return this.password === candidatePassword
-//     }
-
-
     userSchema.methods.comparePassword = async function(candidatePassword) {
         return bcrypt.compare(candidatePassword, this.password)
     }
-
 const UserModel = mongoose.model('User', userSchema)
 
 // SKILL SCHEMA/MODEL
