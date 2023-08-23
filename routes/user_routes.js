@@ -54,20 +54,35 @@ router.get('/search/:name', async (req, res) => {
     }
 })
 
-// Edit a user 
+// Edit a user
 router.put('/:id', checkAdminMiddleware, async (req, res) => {
     try {
-        const user = await UserModel.findByIdAndUpdate(req.params.id, req.body, {new: true })
+        const { username, password, name, isAdmin } = req.body
+        let hashedPassword = password;
+        if (password) {
+            hashedPassword = await bcrypt.hash(password, saltRounds)
+        }
+        const user = await UserModel.findByIdAndUpdate(
+            req.params.id,
+            {
+                username,
+                password: hashedPassword,
+                name,
+                isAdmin
+            },
+            { new: true }
+        )
         if (user) {
             user.save()
             res.send(user)
         } else {
-            res.status(404).send({ error: 'User not found'})
-    }
+            res.status(404).send({ error: 'User not found' })
+        }
     } catch (err) {
         res.status(500).send({ error: err.message })
     }
 })
+
 
 // Delete a user 
 router.delete('/:id', checkAdminMiddleware, async (req, res) => {
