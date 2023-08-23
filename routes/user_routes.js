@@ -7,12 +7,19 @@ const saltRounds = 10
 const router = Router()
 
 // Get all users
-router.get('/', async (req, res) => res.status(200).send(await UserModel.find()))
+router.get('/', async (req, res) => {
+    try {
+        const users = await UserModel.find().select('-password')
+        res.status(200).send(users);
+    } catch (err) {
+        res.status(500).send({ error: err.message })
+    }
+})
 
 // Get a specific user
 router.get('/:id', async (req, res) => {
     try {
-        const user = await UserModel.findById(req.params.id)
+        const user = await UserModel.findById(req.params.id).select('-password')
         if (user) {
             res.send(user)
         } else {
@@ -34,7 +41,8 @@ router.post('/', checkAdminMiddleware, async (req, res) => {
             name,
             isAdmin
         })
-        res.status(201).send(newUser)
+        const { password: excludedPassword, ...userWithoutPassword } = newUser.toObject()
+        res.status(201).send(userWithoutPassword)
     } catch (err) {
         res.status(500).send({ error: err.message })
     }
@@ -73,7 +81,8 @@ router.put('/:id', checkAdminMiddleware, async (req, res) => {
         )
         if (user) {
             user.save()
-            res.send(user)
+            const { password: excludedPassword, ...userWithoutPassword } = user.toObject()
+            res.status(201).send(userWithoutPassword)
         } else {
             res.status(404).send({ error: 'User not found' })
         }

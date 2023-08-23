@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
         const assessments = await AssessmentModel.find()
             .populate('student', 'name') 
             .populate('doneBy', 'username') 
-            .populate('skills.skill', 'skillname')
+            .populate({path: 'skills.skill', select: 'skillName level'})
         res.status(200).send(assessments)
     } catch (error) {
         res.status(500).send({ error: error.message })
