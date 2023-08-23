@@ -7,20 +7,6 @@ const router = Router()
 // Get all skills
 router.get('/', async (req, res) => res.status(200).send(await SkillModel.find()))
 
-// Get a specific skill
-router.get('/:id', async (req, res) => {
-    try {
-        const user = await SkillModel.findById(req.params.id)
-        if (skill) {
-            res.send(skill)
-        } else {
-            res.status(404).send({ error: 'Skill not found'})
-        }
-    } catch (err) {
-        res.status(500).send({ error: err.message} )
-    } 
-})
-
 // Get all skills of a specific level
 router.get('/level/:level', async (req, res) => {
     try {
@@ -35,7 +21,21 @@ router.get('/level/:level', async (req, res) => {
     }
 })
 
-// Create a new user
+// Get a specific skill
+router.get('/:id', async (req, res) => {
+    try {
+        const user = await SkillModel.findById(req.params.id)
+        if (skill) {
+            res.send(skill)
+        } else {
+            res.status(404).send({ error: 'Skill not found'})
+        }
+    } catch (err) {
+        res.status(500).send({ error: err.message} )
+    } 
+})
+
+// Create a new skill
 router.post('/', async (req, res) => {
     try {
         const insertedSkill = await SkillModel.create(req.body)
