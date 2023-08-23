@@ -4,8 +4,10 @@ import { checkAdminMiddleware } from './admin.js'
 
 const router = Router()
 
+// Get all students
 router.get('/', async (req, res) => res.status(200).send(await StudentModel.find()))
 
+// Get a specific student
 router.get('/:id', async (req, res) => {
     try {
         const student = await StudentModel.findById(req.params.id).populate()
@@ -20,6 +22,7 @@ router.get('/:id', async (req, res) => {
     } 
 })
 
+// Create a new student
 router.post('/', async (req, res) => {
     try {
         const insertedStudent = await StudentModel.create(req.body)
@@ -30,6 +33,7 @@ router.post('/', async (req, res) => {
     }
 })
 
+// Update a student
 router.put('/:id', checkAdminMiddleware, async (req, res) => {
     try {
         const student = await StudentModel.findByIdAndUpdate(req.params.id, req.body, {new: true })
@@ -44,6 +48,7 @@ router.put('/:id', checkAdminMiddleware, async (req, res) => {
     }
 })
 
+// Delete a student
 router.delete('/:id', checkAdminMiddleware, async (req, res) => {
     try {
         const student = await StudentModel.findByIdAndDelete(req.params.id)
@@ -57,9 +62,7 @@ router.delete('/:id', checkAdminMiddleware, async (req, res) => {
     }
 })
 
-
 // Search for students 
-
 router.get('/search/:name', async (req, res) => {
     try {
         const searchName = req.params.name
@@ -71,6 +74,5 @@ router.get('/search/:name', async (req, res) => {
         res.status(500).send({ error: error.message })
     }
 })
-
 
 export default router
