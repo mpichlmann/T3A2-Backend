@@ -10,11 +10,11 @@ const checkAdminMiddleware = (req, res, next) => {
     }
   
     try {
-      const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET); 
-      const isAdmin = decodedToken.isAdmin;
+      const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET) 
+      const isAdmin = decodedToken.isAdmin
   
       if (isAdmin) {
-        next();
+        next()
       } else {
         return res.status(403).json({ message: 'Access denied. User is not an admin.' })
       }

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 dotenv.config()
 import dotenv from 'dotenv'
+import bcrypt from 'bcrypt'
 
 async function dbClose() {
     await mongoose.connection.close()
@@ -26,9 +27,15 @@ const userSchema = new mongoose.Schema({
     name: {type: String, required: true},
     isAdmin: {type: Boolean, required: true}
 })
-userSchema.methods.comparePassword = async function(candidatePassword) {
-    return this.password === candidatePassword
+// userSchema.methods.comparePassword = async function(candidatePassword) {
+//     return this.password === candidatePassword
+//     }
+
+
+    userSchema.methods.comparePassword = async function(candidatePassword) {
+        return bcrypt.compare(candidatePassword, this.password)
     }
+
 const UserModel = mongoose.model('User', userSchema)
 
 // SKILL SCHEMA/MODEL
