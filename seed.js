@@ -1,40 +1,68 @@
-import { StudentModel, UserModel, SkillModel, AssessmentModel, dbClose } from './db.js';
+import { StudentModel, UserModel, SkillModel, AssessmentModel, dbClose } from './db.js'
+import bcrypt from 'bcrypt'
+const saltRounds = 10
 
 const seedData = async () => {
     try {
-        await AssessmentModel.deleteMany();
-        console.log('Deleted assessments');
+        await AssessmentModel.deleteMany()
+        console.log('Deleted assessments')
 
-        await StudentModel.deleteMany();
-        console.log('Deleted students');
+        await StudentModel.deleteMany()
+        console.log('Deleted students')
 
-        await UserModel.deleteMany();
-        console.log('Deleted users');
+        await UserModel.deleteMany()
+        console.log('Deleted users')
 
-        await SkillModel.deleteMany();
-        console.log('Deleted skills');
+        await SkillModel.deleteMany()
+        console.log('Deleted skills')
 
         const skillslist = [
             { skillName: 'jump', level: 1 },
             { skillName: 'handstand', level: 2 },
             { skillName: 'somersault', level: 3 },
             { skillName: 'backflip', level: 4 }
-        ];
-        const sk = await SkillModel.insertMany(skillslist);
-        console.log('Skills seeded');
+        ]
+        const sk = await SkillModel.insertMany(skillslist)
+        console.log('Skills seeded')
 
         const users = [
-            { username: 'eliteadmin', password: 'spameggs', name: 'Adam Minister', isAdmin: true },
-            { username: 'elitecoach', password: 'foobar', name: 'Jay Son', isAdmin: false }
-        ];
-        const us = await UserModel.insertMany(users);
-        console.log('Users seeded');
+            { 
+            username: 'eliteadmin', 
+            password: 'spameggs', 
+            name: 'Adam Minister', 
+            isAdmin: true 
+            },
+            { 
+            username: 'elitecoach', 
+            password: 'foobar', 
+            name: 'Jay Son', 
+            isAdmin: false 
+            }
+        ]
+        // const us = await UserModel.insertMany(users)
+        // console.log('Users seeded')
+
+        // Hash passwords before inserting
+        const hashedUsers = await Promise.all(users.map(async (user) => {
+        const hashedPassword = await bcrypt.hash(user.password, saltRounds)
+        return {
+            ...user,
+            password: hashedPassword
+            }
+        }))
+
+        const us = await UserModel.insertMany(hashedUsers);
+        console.log('Users seeded')
+        
+
+
+
 
         const students = [
             { name: 'Lachie', DOB: new Date('1996-09-04'), skillLevel: 3 },
             { name: 'Argine', DOB: new Date('1994-01-01'), skillLevel: 6 },
             { name: 'Max', DOB: new Date('1996-07-04'), skillLevel: 1 }
-        ];
+        ]
         const st = await StudentModel.insertMany(students);
         console.log('Students seeded');
 
@@ -94,13 +122,13 @@ const seedData = async () => {
                 ]
             }
         ];
-        const as = await AssessmentModel.insertMany(assessments);
-        console.log('Assessments seeded');
+        const as = await AssessmentModel.insertMany(assessments)
+        console.log('Assessments seeded')
     } catch (error) {
-        console.error(error);
+        console.error(error)
     } finally {
-        dbClose();
+        dbClose()
     }
-};
+}
 
-seedData();
+seedData()

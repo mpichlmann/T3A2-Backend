@@ -1,5 +1,8 @@
 import { Router } from 'express'
 import { UserModel } from '../db.js'
+import bcrypt from 'bcrypt'
+import { checkAdminMiddleware } from './admin.js'
+const saltRounds = 10
 
 const router = Router()
 
@@ -19,16 +22,28 @@ router.get('/:id', async (req, res) => {
     } 
 })
 
-router.post('/', async (req, res) => {
+
+// Create a new user
+router.post('/', checkAdminMiddleware, async (req, res) => {
     try {
-        const insertedUser = await UserModel.create(req.body)
-        res.status(201).send(insertedUser)
-    } 
-    catch (err) {
-        res.status(500).send({ error: err.message} )
+        const { username, password, name, isAdmin } = req.body;
+
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, saltRounds)
+
+        // Create the new user with the hashed password
+        const newUser = await UserModel.create({
+            username,
+            password: hashedPassword,
+            name,
+            isAdmin
+        })
+
+        res.status(201).send(newUser)
+    } catch (err) {
+        res.status(500).send({ error: err.message })
     }
 })
-
 
 // Search for users 
 
