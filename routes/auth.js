@@ -11,13 +11,13 @@ router.post('/', async (req, res) => {
         const user = await UserModel.findOne({ username })
 
         if (!user) {
-            return res.status(401).json({ message: 'Invalid username or password' })
+            return res.status(401).send({ message: 'Invalid username or password' })
         }
 
         const isPasswordValid = await user.comparePassword(password)
 
         if (!isPasswordValid) {
-            return res.status(401).json({ message: 'Invalid username or password' })
+            return res.status(401).send({ message: 'Invalid username or password' })
         }
 
         const accessToken = jwt.sign({ userId: user._id, isAdmin: user.isAdmin, name: user.name }, process.env.ACCESS_TOKEN_SECRET)
@@ -26,8 +26,8 @@ router.post('/', async (req, res) => {
         res.send({ user: userWithoutPassword, accessToken })
 
     } catch (error) {
-        console.error(error)
-        res.status(500).json({ message: 'An error occurred while processing your request' })
+        console.error(err)
+        res.status(500).send({ error: err.message })
     }
     
 })

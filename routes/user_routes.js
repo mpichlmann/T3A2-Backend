@@ -16,6 +16,17 @@ router.get('/', async (req, res) => {
     }
 })
 
+// Search for users
+router.get('/results', async (req, res) => {
+    try {
+        const searchName = req.query.search
+        const users = await UserModel.find({ name: { $regex: searchName, $options: 'i' } }).select('-password')
+        res.status(200).send(users)
+    } catch (err) {
+        res.status(500).send({ error: err.message })
+    }
+})
+
 // Get a specific user
 router.get('/:id', async (req, res) => {
     try {
@@ -48,18 +59,18 @@ router.post('/', checkAdminMiddleware, async (req, res) => {
     }
 })
 
-// Search for users 
-router.get('/search/:name', async (req, res) => {
-    try {
-        const searchName = req.params.name
+// // Search for users 
+// router.get('/search/:name', async (req, res) => {
+//     try {
+//         const searchName = req.params.name
 
-        const users = await UserModel.find({ name: { $regex: searchName, $options: 'i' } })
+//         const users = await UserModel.find({ name: { $regex: searchName, $options: 'i' } })
 
-        res.status(200).send(users)
-    } catch (error) {
-        res.status(500).send({ error: error.message })
-    }
-})
+//         res.status(200).send(users)
+//     } catch (error) {
+//         res.status(500).send({ error: error.message })
+//     }
+// })
 
 // Edit a user
 router.put('/:id', checkAdminMiddleware, async (req, res) => {

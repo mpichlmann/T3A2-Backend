@@ -5,7 +5,28 @@ import { checkAdminMiddleware } from './admin.js'
 const router = Router()
 
 // Get all skills
-router.get('/', async (req, res) => res.status(200).send(await SkillModel.find()))
+router.get('/', async (req, res) => {
+    try {
+        const skills = await SkillModel.find()
+        res.status(200).send(skills)
+    } catch (err) {
+        res.status(500).send({ error: err.message })
+    }
+})
+
+// Get a specific skill
+router.get('/:id', async (req, res) => {
+    try {
+        const skill = await SkillModel.findById(req.params.id)
+        if (skill) {
+            res.send(skill)
+        } else {
+            res.status(404).send({ error: 'Skill not found'})
+        }
+    } catch (err) {
+        res.status(500).send({ error: err.message} )
+    } 
+})
 
 // Get all skills of a specific level
 router.get('/level/:level', async (req, res) => {
@@ -21,27 +42,12 @@ router.get('/level/:level', async (req, res) => {
     }
 })
 
-// Get a specific skill
-router.get('/:id', async (req, res) => {
-    try {
-        const user = await SkillModel.findById(req.params.id)
-        if (skill) {
-            res.send(skill)
-        } else {
-            res.status(404).send({ error: 'Skill not found'})
-        }
-    } catch (err) {
-        res.status(500).send({ error: err.message} )
-    } 
-})
-
 // Create a new skill
-router.post('/', async (req, res) => {
+router.post('/', checkAdminMiddleware, async (req, res) => {
     try {
         const insertedSkill = await SkillModel.create(req.body)
         res.status(201).send(insertedSkill)
-    } 
-    catch (err) {
+    } catch (err) {
         res.status(500).send({ error: err.message} )
     }
 })
@@ -55,7 +61,7 @@ router.put('/:id', checkAdminMiddleware, async (req, res) => {
             res.send(skill)
         } else {
             res.status(404).send({ error: 'Skill not found'})
-    }
+        }
     } catch (err) {
         res.status(500).send({ error: err.message })
     }

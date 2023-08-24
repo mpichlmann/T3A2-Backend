@@ -13,8 +13,8 @@ router.get('/', async (req, res) => {
             .populate('doneBy', 'username') 
             .populate({path: 'skills.skill', select: 'skillName level'})
         res.status(200).send(assessments)
-    } catch (error) {
-        res.status(500).send({ error: error.message })
+    } catch (err) {
+        res.status(500).send({ error: err.message })
     }
 })
 
@@ -32,51 +32,10 @@ router.get('/', async (req, res) => {
 // })
 
 
-
-// OLD METHOD OF FINDING A SPECIFIC STUDENTS ASSESSMENTS
-// // find assessments from a specific student
-// router.get('/student/:studentId', async (req, res) => {
-//     try {
-//         const assessments = await AssessmentModel.find({ student: req.params.studentId })
-//             .populate('student', 'name')
-//             .populate('doneBy', 'username')
-//             .populate('skills.skill', 'skillName')
-//         if (assessments.length > 0) {
-//             res.send(assessments)
-//         } else {
-//             res.status(404).send({ error: 'No assessments found for the specified student' })
-//         }
-//     } catch (err) {
-//         res.status(500).send({ error: err.message })
-//     }
-// })
-
-// Get a specific assessment
-router.get('/:id', async (req, res) => {
+// find assessments from a specific student
+router.get('/student/:studentId', async (req, res) => {
     try {
-        const assessment = await AssessmentModel.findById(req.params.id)
-            .populate('student', 'name') 
-            .populate('doneBy', 'username') 
-            .populate({path: 'skills.skill', select: 'skillName level'})
-        if (assessment) {
-            res.send(assessment)
-        } else {
-            res.status(404).send({ error: 'Student not found'})
-        }
-    }
-    catch (err) {
-        res.status(500).send({ error: err.message})
-    } 
-})
-
-// Get all assessments from a specific student
-router.get('/results', async (req, res) => {
-    try {
-        const studentId = req.query.studentId
-        if (!studentId) {
-            return res.status(400).send({ error: 'Missing studentId parameter' })
-        }
-        const assessments = await AssessmentModel.find({ student: studentId })
+        const assessments = await AssessmentModel.find({ student: req.params.studentId })
             .populate('student', 'name')
             .populate('doneBy', 'username')
             .populate({path: 'skills.skill', select: 'skillName level'})
@@ -90,18 +49,53 @@ router.get('/results', async (req, res) => {
     }
 })
 
+// Get a specific assessment
+router.get('/:id', async (req, res) => {
+    try {
+        const assessment = await AssessmentModel.findById(req.params.id)
+            .populate('student', 'name') 
+            .populate('doneBy', 'username') 
+            .populate({path: 'skills.skill', select: 'skillName level'})
+        if (assessment) {
+            res.send(assessment)
+        } else {
+            res.status(404).send({ error: 'Student not found'})
+        }
+    } catch (err) {
+        res.status(500).send({ error: err.message})
+    } 
+})
+
+// // Get all assessments from a specific student
+// router.get('/results', async (req, res) => {
+//     try {
+//         const studentId = req.query.studentId
+//         if (!studentId) {
+//             return res.status(400).send({ error: 'Missing studentId parameter' })
+//         }
+//         const assessments = await AssessmentModel.find({ student: studentId })
+//             .populate('student', 'name')
+//             .populate('doneBy', 'username')
+//             .populate({path: 'skills.skill', select: 'skillName level'})
+//         if (assessments.length > 0) {
+//             res.send(assessments)
+//         } else {
+//             res.status(404).send({ error: 'No assessments found for the specified student' })
+//         }
+//     } catch (err) {
+//         res.status(500).send({ error: err.message })
+//     }
+// })
+
 // Create a new assessment
 router.post('/', getUserId, async (req, res) => {
     try {
-        const { user } = req; // Get the user from the request
-        
-
+        const { user } = req
         const insertedAssessment = await AssessmentModel.create({
             ...req.body,
             doneBy: user,
             Date: new Date(),
-        });
-
+        })
         res.status(201).send(insertedAssessment)
     } catch (err) {
         res.status(500).send({ error: err.message })
