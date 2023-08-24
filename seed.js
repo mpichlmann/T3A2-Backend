@@ -83,7 +83,8 @@ const seedData = async () => {
                 skills: [
                     { skill: (await SkillModel.findOne({ skillName: 'jump' }))._id, score: 1 },
                     { skill: (await SkillModel.findOne({ skillName: 'handstand' }))._id, score: 2 }
-                ]
+                ],
+                Date: new Date('2022-01-01'),
             },
             {
                 student: st.find(student => student.name === 'Argine')._id,
@@ -92,7 +93,8 @@ const seedData = async () => {
                 skills: [
                     { skill: (await SkillModel.findOne({ skillName: 'somersault' }))._id, score: 4 },
                     { skill: (await SkillModel.findOne({ skillName: 'backflip' }))._id, score: 3 }
-                ]
+                ],
+                Date: new Date('2022-01-01'),
             },
             {
                 student: st.find(student => student.name === 'Max')._id,
@@ -101,7 +103,8 @@ const seedData = async () => {
                 skills: [
                     { skill: (await SkillModel.findOne({ skillName: 'jump' }))._id, score: 1 },
                     { skill: (await SkillModel.findOne({ skillName: 'backflip' }))._id, score: 1 }
-                ]
+                ],
+                Date: Date.now(),
             },
             {
                 student: st.find(student => student.name === 'Lachie')._id,
@@ -110,7 +113,8 @@ const seedData = async () => {
                 skills: [
                     { skill: (await SkillModel.findOne({ skillName: 'backflip' }))._id, score: 3 },
                     { skill: (await SkillModel.findOne({ skillName: 'somersault' }))._id, score: 4 }
-                ]
+                ],
+                Date: Date.now(),
             },
             {
                 student: st.find(student => student.name === 'Argine')._id,
@@ -119,7 +123,8 @@ const seedData = async () => {
                 skills: [
                     { skill: (await SkillModel.findOne({ skillName: 'jump' }))._id, score: 3 },
                     { skill: (await SkillModel.findOne({ skillName: 'handstand' }))._id, score: 3 }
-                ]
+                ],
+                Date: Date.now(),
             },
             {
                 student: st.find(student => student.name === 'Max')._id,
@@ -128,7 +133,8 @@ const seedData = async () => {
                 skills: [
                     { skill: (await SkillModel.findOne({ skillName: 'handstand' }))._id, score: 2 },
                     { skill: (await SkillModel.findOne({ skillName: 'backflip' }))._id, score: 2 }
-                ]
+                ],
+                Date: Date.now(),
             }
         ]
         const as = await AssessmentModel.insertMany(assessments)
