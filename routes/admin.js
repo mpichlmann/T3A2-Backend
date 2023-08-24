@@ -22,7 +22,7 @@ const checkAdminMiddleware = (req, res, next) => {
     }
   }
   
-// Middleware to check if a user is logged in or not
+// Middleware to get the user from the jwt
 const getUserId = (req, res, next) => {
   const token = req.header('Authorization')
 

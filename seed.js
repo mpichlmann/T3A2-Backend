@@ -94,7 +94,7 @@ const seedData = async () => {
                     { skill: (await SkillModel.findOne({ skillName: 'somersault' }))._id, score: 4 },
                     { skill: (await SkillModel.findOne({ skillName: 'backflip' }))._id, score: 3 }
                 ],
-                Date: new Date('2022-01-01'),
+                Date: new Date('2022-02-03'),
             },
             {
                 student: st.find(student => student.name === 'Max')._id,
@@ -104,7 +104,7 @@ const seedData = async () => {
                     { skill: (await SkillModel.findOne({ skillName: 'jump' }))._id, score: 1 },
                     { skill: (await SkillModel.findOne({ skillName: 'backflip' }))._id, score: 1 }
                 ],
-                Date: Date.now(),
+                Date: new Date('2021-01-10'),
             },
             {
                 student: st.find(student => student.name === 'Lachie')._id,
@@ -114,7 +114,7 @@ const seedData = async () => {
                     { skill: (await SkillModel.findOne({ skillName: 'backflip' }))._id, score: 3 },
                     { skill: (await SkillModel.findOne({ skillName: 'somersault' }))._id, score: 4 }
                 ],
-                Date: Date.now(),
+                Date: new Date('2022-12-11'),
             },
             {
                 student: st.find(student => student.name === 'Argine')._id,
@@ -124,7 +124,7 @@ const seedData = async () => {
                     { skill: (await SkillModel.findOne({ skillName: 'jump' }))._id, score: 3 },
                     { skill: (await SkillModel.findOne({ skillName: 'handstand' }))._id, score: 3 }
                 ],
-                Date: Date.now(),
+                Date: new Date('2022-05-13'),
             },
             {
                 student: st.find(student => student.name === 'Max')._id,
@@ -134,7 +134,7 @@ const seedData = async () => {
                     { skill: (await SkillModel.findOne({ skillName: 'handstand' }))._id, score: 2 },
                     { skill: (await SkillModel.findOne({ skillName: 'backflip' }))._id, score: 2 }
                 ],
-                Date: Date.now(),
+                Date: new Date('2022-10-03'),
             }
         ]
         const as = await AssessmentModel.insertMany(assessments)
