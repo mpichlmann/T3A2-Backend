@@ -38,13 +38,23 @@ const skillSchema = new mongoose.Schema({
 })
 const SkillModel = mongoose.model('Skill', skillSchema)
 
-// ASSESSMENT SCHEMA/MODEL
+// // ASSESSMENT SCHEMA/MODEL
 const assessmentSchema = new mongoose.Schema({
     student: { type: mongoose.Schema.Types.ObjectId, ref: 'Student', required: true },
     doneBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    isCompleted: {type: Boolean, required: true},
-    skills: [{ skill: { type: mongoose.Schema.Types.ObjectId, ref: 'Skill' }, score: Number }]
+    skills: {
+        type: [{ skill: { type: mongoose.Schema.Types.ObjectId, ref: 'Skill', required: true }, score: Number }],
+        validate: {
+            validator: function(skills) {
+                return skills.length > 0
+            },
+            message: 'At least one skill is required in the skills array.',
+        },
+    },
+    isCompleted: { type: Boolean, required: true },
+    Date: { type: Date, required: true },
 })
-const AssessmentModel = mongoose.model('Assessment', assessmentSchema)
+const AssessmentModel = mongoose.model('Assessment', assessmentSchema);
+
 
 export { StudentModel, UserModel, SkillModel, AssessmentModel, dbClose } 
