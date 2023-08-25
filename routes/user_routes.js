@@ -32,7 +32,7 @@ router.get('/:id', async (req, res) => {
     try {
         const user = await UserModel.findById(req.params.id).select('-password')
         if (user) {
-            res.send(user)
+            res.status(200).send(user)
         } else {
             res.status(404).send({ error: 'Student not found'})
         }
@@ -80,7 +80,7 @@ router.put('/:id', checkAdminMiddleware, async (req, res) => {
         if (user) {
             user.save()
             const { password: excludedPassword, ...userWithoutPassword } = user.toObject()
-            res.status(201).send(userWithoutPassword)
+            res.status(200).send(userWithoutPassword)
         } else {
             res.status(404).send({ error: 'User not found' })
         }

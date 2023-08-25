@@ -26,7 +26,7 @@ router.get('/student/:studentId', async (req, res) => {
             .populate('doneBy', 'username')
             .populate({path: 'skills.skill', select: 'skillName level'})
         if (assessments.length > 0) {
-            res.send(assessments)
+            res.status(200).send(assessments)
         } else {
             res.status(404).send({ error: 'No assessments found for the specified student' })
         }
@@ -61,6 +61,7 @@ router.post('/', getUserId, async (req, res) => {
             doneBy: user,
             Date: new Date(),
         })
+        console.log(req.body)
         res.status(201).send(insertedAssessment)
     } catch (err) {
         res.status(500).send({ error: err.message })
@@ -76,7 +77,7 @@ router.put('/:id', checkAdminMiddleware, async (req, res) => {
             .populate({path: 'skills.skill', select: 'skillName level'})
         if (assessment) {
             assessment.save()
-            res.send(assessment)
+            res.status(200).send(assessment)
         } else {
             res.status(404).send({ error: 'Assessment not found'})
     }

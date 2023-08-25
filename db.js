@@ -4,9 +4,7 @@ import bcrypt from 'bcrypt'
 
 dotenv.config()
 
-async function dbClose() {
-    await mongoose.connection.close()
-    console.log('db closed')}
+
 
 mongoose.connect(process.env.ATLAS_DB_URL)
     // .then(m => console.log(m.connection.readyState === 1 ? 'Mongoose connected!' : 'Mongoose failed'))
@@ -58,4 +56,4 @@ const assessmentSchema = new mongoose.Schema({
 const AssessmentModel = mongoose.model('Assessment', assessmentSchema);
 
 
-export { StudentModel, UserModel, SkillModel, AssessmentModel, dbClose } 
+export { StudentModel, UserModel, SkillModel, AssessmentModel,  } 

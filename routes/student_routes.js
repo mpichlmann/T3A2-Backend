@@ -30,7 +30,7 @@ router.get('/:id', async (req, res) => {
     try {
         const student = await StudentModel.findById(req.params.id).populate()
         if (student) {
-            res.send(student)
+            res.status(200).send(student)
         } else {
             res.status(404).send({ error: 'Student not found'})
         }
@@ -55,7 +55,7 @@ router.put('/:id', checkAdminMiddleware, async (req, res) => {
         const student = await StudentModel.findByIdAndUpdate(req.params.id, req.body, {new: true })
         if (student) {
             student.save()
-            res.send(student)
+            res.status(200).send(student)
         } else {
             res.status(404).send({ error: 'Student not found'})
     }

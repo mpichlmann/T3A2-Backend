@@ -1,6 +1,12 @@
-import { StudentModel, UserModel, SkillModel, AssessmentModel, dbClose } from './db.js'
+import { StudentModel, UserModel, SkillModel, AssessmentModel,  } from './db.js'
 import bcrypt from 'bcrypt'
+import mongoose from 'mongoose'
+
 const saltRounds = 10
+
+async function dbClose() {
+    await mongoose.connection.close()
+    console.log('db closed')}
 
 const seedData = async () => {
     try {
