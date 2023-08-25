@@ -11,7 +11,7 @@ router.get('/', verifyUserMiddleware, async (req, res) => {
         const assessments = await AssessmentModel.find()
             .populate('student', 'name') 
             .populate('doneBy', 'name') 
-            .populate({path: 'skills.skill', select: 'skillName level'})
+            .populate({path: 'skills.skill', select: 'skillName levels'})
         res.status(200).send(assessments)
     } catch (err) {
         res.status(500).send({ error: err.message })
@@ -24,7 +24,7 @@ router.get('/student/:studentId', verifyUserMiddleware, async (req, res) => {
         const assessments = await AssessmentModel.find({ student: req.params.studentId })
             .populate('student', 'name')
             .populate('doneBy', 'name')
-            .populate({path: 'skills.skill', select: 'skillName level'})
+            .populate({path: 'skills.skill', select: 'skillName levels'})
         if (assessments.length > 0) {
             res.status(200).send(assessments)
         } else {
@@ -41,7 +41,7 @@ router.get('/:id', verifyUserMiddleware, async (req, res) => {
         const assessment = await AssessmentModel.findById(req.params.id)
             .populate('student', 'name') 
             .populate('doneBy', 'name') 
-            .populate({path: 'skills.skill', select: 'skillName level'})
+            .populate({path: 'skills.skill', select: 'skillName levels'})
         if (assessment) {
             res.send(assessment)
         } else {
@@ -73,7 +73,7 @@ router.put('/:id', checkAdminMiddleware, async (req, res) => {
         const assessment = await AssessmentModel.findByIdAndUpdate(req.params.id, req.body, {new: true })
             .populate('student', 'name') 
             .populate('doneBy', 'name') 
-            .populate({path: 'skills.skill', select: 'skillName level'})
+            .populate({path: 'skills.skill', select: 'skillName levels'})
         if (assessment) {
             assessment.save()
             res.status(200).send(assessment)
