@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 // Middleware function to check if user is an admin
 const checkAdminMiddleware = (req, res, next) => {
     const token = req.header('Authorization')
-  
+
     if (!token) {
       return res.status(401).send({ message: 'Authorization token not provided.' })
     }
@@ -33,7 +33,7 @@ const getUserId = (req, res, next) => {
   try {
     const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET) 
     req.user = decodedToken.userId  
-    next();
+    next()
   } catch (err) {
     return res.status(500).send({ error: err.message })
   }

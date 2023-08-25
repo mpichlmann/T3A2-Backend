@@ -18,21 +18,7 @@ router.get('/', async (req, res) => {
     }
 })
 
-
-
-// // OLD METHOD OF CREATING AN ASSESSMENT
-// router.post('/', checkLoggedInMiddleware, async (req, res) => {
-//     try {
-//         const insertedAssessment = await AssessmentModel.create(req.body)
-//         res.status(201).send(insertedAssessment)
-//     } 
-//     catch (err) {
-//         res.status(500).send({ error: err.message})
-//     }
-// })
-
-
-// find assessments from a specific student
+// Get all assessments from a specific student
 router.get('/student/:studentId', async (req, res) => {
     try {
         const assessments = await AssessmentModel.find({ student: req.params.studentId })
@@ -65,27 +51,6 @@ router.get('/:id', async (req, res) => {
         res.status(500).send({ error: err.message})
     } 
 })
-
-// // Get all assessments from a specific student
-// router.get('/results', async (req, res) => {
-//     try {
-//         const studentId = req.query.studentId
-//         if (!studentId) {
-//             return res.status(400).send({ error: 'Missing studentId parameter' })
-//         }
-//         const assessments = await AssessmentModel.find({ student: studentId })
-//             .populate('student', 'name')
-//             .populate('doneBy', 'username')
-//             .populate({path: 'skills.skill', select: 'skillName level'})
-//         if (assessments.length > 0) {
-//             res.send(assessments)
-//         } else {
-//             res.status(404).send({ error: 'No assessments found for the specified student' })
-//         }
-//     } catch (err) {
-//         res.status(500).send({ error: err.message })
-//     }
-// })
 
 // Create a new assessment
 router.post('/', getUserId, async (req, res) => {

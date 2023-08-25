@@ -7,7 +7,7 @@ const saltRounds = 10
 const router = Router()
 
 // Get all users
-router.get('/', async (req, res) => {
+router.get('/', checkAdminMiddleware, async (req, res) => {
     try {
         const users = await UserModel.find().select('-password')
         res.status(200).send(users);
@@ -58,19 +58,6 @@ router.post('/', checkAdminMiddleware, async (req, res) => {
         res.status(500).send({ error: err.message })
     }
 })
-
-// // Search for users 
-// router.get('/search/:name', async (req, res) => {
-//     try {
-//         const searchName = req.params.name
-
-//         const users = await UserModel.find({ name: { $regex: searchName, $options: 'i' } })
-
-//         res.status(200).send(users)
-//     } catch (error) {
-//         res.status(500).send({ error: error.message })
-//     }
-// })
 
 // Edit a user
 router.put('/:id', checkAdminMiddleware, async (req, res) => {

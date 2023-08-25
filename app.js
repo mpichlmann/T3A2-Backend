@@ -13,7 +13,7 @@ app.use(cors())
 
 app.use(express.json())
 
-app.get('/hello', (req, res) => res.send({ info: 'Tumble Skills! '}))
+app.get('/hello', (req, res) => res.send({ info: 'Tumble Skills!' }))
 
 app.use('/assessments', assessmentRoutes)
 

@@ -78,15 +78,4 @@ router.delete('/:id', checkAdminMiddleware, async (req, res) => {
     }
 })
 
-// // OLD METHOD for Search for students 
-// router.get('/search/:name', async (req, res) => {
-//     try {
-//         const searchName = req.params.name
-//         const students = await StudentModel.find({ name: { $regex: searchName, $options: 'i' } })
-//         res.status(200).send(students)
-//     } catch (error) {
-//         res.status(500).send({ error: error.message })
-//     }
-// })
-
 export default router

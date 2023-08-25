@@ -1,15 +1,16 @@
 import mongoose from 'mongoose'
-dotenv.config()
 import dotenv from 'dotenv'
 import bcrypt from 'bcrypt'
+
+dotenv.config()
 
 async function dbClose() {
     await mongoose.connection.close()
     console.log('db closed')}
 
 mongoose.connect(process.env.ATLAS_DB_URL)
-    .then(m => console.log(m.connection.readyState === 1 ? 'Mongoose connected!' : 'Mongoose failed'))
-    .catch(err => console.error(err))
+    // .then(m => console.log(m.connection.readyState === 1 ? 'Mongoose connected!' : 'Mongoose failed'))
+    // .catch(err => console.error(err))
 
 // STUDENT SCHEMA/MODEL
 const studentSchema = new mongoose.Schema({
