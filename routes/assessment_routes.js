@@ -45,7 +45,7 @@ router.get('/:id', async (req, res) => {
         if (assessment) {
             res.send(assessment)
         } else {
-            res.status(404).send({ error: 'Student not found'})
+            res.status(404).send({ error: 'Assessment not found'})
         }
     } catch (err) {
         res.status(500).send({ error: err.message})
@@ -61,7 +61,6 @@ router.post('/', getUserId, async (req, res) => {
             doneBy: user,
             Date: new Date(),
         })
-        console.log(req.body)
         res.status(201).send(insertedAssessment)
     } catch (err) {
         res.status(500).send({ error: err.message })

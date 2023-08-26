@@ -20,7 +20,7 @@ describe("Skills Testing", () => {
 
         const response = await request(app).get(`/skills/${testSkill._id}`)
         // Assertions
-        expect(response.status).toBe(200);
+        expect(response.status).toBe(200)
         expect(response.body.skillName).toBe('test skill')
 
         //cleanup 
