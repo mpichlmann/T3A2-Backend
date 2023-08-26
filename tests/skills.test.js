@@ -3,7 +3,6 @@ import request from 'supertest'
 import { SkillModel } from '../db.js'
 
 describe("Skills Testing", () => {
-
     test('Get all skills', async () => {
         const res = await request(app).get('/skills')
         expect(res.status).toBe(200)
