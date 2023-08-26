@@ -25,4 +25,6 @@ app.use('/users', userRoutes)
 
 app.use('/login', authRoutes)
 
+console.log('hello world')
+
 export default app
