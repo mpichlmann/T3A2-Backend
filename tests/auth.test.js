@@ -69,7 +69,6 @@ describe('Auth protected student routes', () => {
         expect(typeof response.body.name).toBe('string')
         expect(response.body.name).toBe('Test Student')
         
-
         // Clean up
         await StudentModel.findByIdAndDelete(response.body._id)
     })
@@ -102,8 +101,6 @@ describe('Auth protected student routes', () => {
         // Assertions
         expect(response.status).toBe(200)
         expect(response.body.message).toBe('Student deleted successfully')
-
-        
     })
 
     test('Attempt to delete a non-existent student', async () => {
@@ -159,26 +156,6 @@ describe('Auth protected skills routes', () =>{
         expect(response.status).toBe(500)
         expect(response.body.error).toBe("Skill validation failed: level: Path `level` is required.")
     })
-
-    // test('Update a skill', async () => {
-    //     const testSkill = await SkillModel.create({
-    //         skillName: 'testSkill',
-    //         level: 4
-    //     })
-
-    //     const response = await request(app)
-    //     .put(`/skills/${testSkill._id}`)
-    //     .send({
-    //         skillName: 'updatedSkill'
-    //     })
-    //     .set({Authorization: accessToken})
-
-    //     expect(response.status).toBe(200)
-    //     expect(response.body.skillName).toBe('updatedSkill')
-
-    //     // Clean up
-    //     await SkillModel.findByIdAndDelete(testSkill._id)
-    // })
 
     test('Update a skill that does not exist', async () => {
         const response = await request(app)
@@ -239,28 +216,6 @@ describe('Auth protected skills routes', () =>{
 })
 
 describe('Auth protected user routes', () => {
-    // test('Update a user', async () => {
-    //     const testUser = await UserModel.create({
-    //         username: 'testUser',
-    //         password: 'testPassword',
-    //         name: 'Testy McUserson',
-    //         isAdmin: false
-    //     })
-
-    //     const response = await request(app)
-    //     .put(`/users/${testUser._id}`)
-    //     .send({
-    //         username: 'updatedUser'
-    //     })
-    //     .set({Authorization: accessToken})
-
-    //     expect(response.status).toBe(200)
-    //     expect(response.body.username).toBe('updatedUser')
-
-    //     // Clean up
-    //     await UserModel.findByIdAndDelete(testUser._id)
-    // })
-
     test('Delete a user', async () => {
         const testDeleteUser = await UserModel.create({
             username: 'testUser',

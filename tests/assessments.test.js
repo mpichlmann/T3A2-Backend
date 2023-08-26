@@ -95,7 +95,6 @@ describe('Assessments testing', () => {
 
         expect(response.status).toBe(200)
 
-
         await AssessmentModel.findByIdAndDelete(testSpecificAssessment._id)
         await StudentModel.findByIdAndDelete(testSpecificStudent._id)
         await SkillModel.findByIdAndDelete(testSpecificSkill._id)

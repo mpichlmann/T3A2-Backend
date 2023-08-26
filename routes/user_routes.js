@@ -7,7 +7,7 @@ const saltRounds = 10
 const router = Router()
 
 // Get all users
-router.get('/', checkAdminMiddleware, async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const users = await UserModel.find().select('-password')
         res.status(200).send(users);

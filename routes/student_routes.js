@@ -1,11 +1,11 @@
 import { Router } from 'express'
 import { StudentModel } from '../db.js'
-import { checkAdminMiddleware } from './admin.js'
+import { checkAdminMiddleware, verifyUserMiddleware } from './admin.js'
 
 const router = Router()
 
 // Get all students
-router.get('/', async (req, res) => {
+router.get('/', verifyUserMiddleware, async (req, res) => {
     try {
         const students = await StudentModel.find()
         res.status(200).send(students);
@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 })
 
 // Search for students 
-router.get('/results', async (req, res) => {
+router.get('/results', verifyUserMiddleware, async (req, res) => {
     try {
         const searchName = req.query.search
         const students = await StudentModel.find({ name: { $regex: searchName, $options: 'i' } })
@@ -26,7 +26,7 @@ router.get('/results', async (req, res) => {
 })
 
 // Get a specific student
-router.get('/:id', async (req, res) => {
+router.get('/:id', verifyUserMiddleware, async (req, res) => {
     try {
         const student = await StudentModel.findById(req.params.id).populate()
         if (student) {

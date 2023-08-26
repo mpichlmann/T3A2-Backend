@@ -3,7 +3,6 @@ import request from 'supertest'
 import { UserModel } from '../db.js'
 
 describe("Users Testing", () => {
-    
     test('Search for users', async () => {
         const response = await request(app).get('/users/results?search=a')
 
@@ -46,5 +45,4 @@ describe("Users Testing", () => {
         expect(response.status).toBe(500)
         expect(response.body.error).toBe("Cast to ObjectId failed for value \"thisIsntEvenAnId\" (type string) at path \"_id\" for model \"User\"")
     })
-
 })
