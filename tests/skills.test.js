@@ -67,5 +67,4 @@ describe("Skills Testing", () => {
         expect(response.status).toBe(500)
         expect(response.body.error).toBe("Cast to Number failed for value \"badparameter\" (type string) at path \"level\" for model \"Skill\"")
     })
-
 })

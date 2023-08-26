@@ -1,10 +1,35 @@
 import app from '../app.js'
 import request from 'supertest'
+import { UserModel } from '../db.js'
+import bcrypt from 'bcrypt'
+const saltRounds = 10
 
+let nonAdminToken
+let testCoach
+
+test('Login with valid credentials as a non admin', async () => {
+        // Create a test user
+        const hashedPassword = await bcrypt.hash('testpassword', saltRounds)
+        testCoach = await UserModel.create({
+            username: 'testcoach',
+            password: hashedPassword, 
+            name: 'Test Admin',
+            isAdmin: false,
+        })
+        const response = await request(app)
+            .post('/login')
+            .send({ username: 'testcoach', password: 'testpassword' })
+
+        // Assertions
+        expect(response.status).toBe(200)
+        expect(response.body.user.username).toBe('testcoach')
+        expect(response.body.accessToken).toBeDefined()
+        nonAdminToken = response.body.accessToken
+    })
 
 describe("Students Testing", () => {
     test('GET /', async () => {
-        const res = await request(app).get('/hello')
+        const res = await request(app).get('/hello').set({Authorization: nonAdminToken})
         expect(res.status).toBe(200)
         expect(res.header['content-type']).toMatch('json')
         expect(res.body.info).toBeDefined()
@@ -13,7 +38,7 @@ describe("Students Testing", () => {
     })
 
     test('GET /students', async () => {
-        const res = await request(app).get('/students')
+        const res = await request(app).get('/students').set({Authorization: nonAdminToken})
         expect(res.status).toBe(200)
         expect(res.header['content-type']).toMatch('json')
         expect(res.body).toBeInstanceOf(Array)
@@ -21,7 +46,7 @@ describe("Students Testing", () => {
     })
 
     test('Each student has a valid "name" and "skillLevel"', async () => {
-        const response = await request(app).get('/students')
+        const response = await request(app).get('/students').set({Authorization: nonAdminToken})
         const students = response.body
         students.forEach(student => {
             expect(student.name).toBeDefined()
@@ -31,6 +56,8 @@ describe("Students Testing", () => {
             expect(student.skillLevel).toBeGreaterThanOrEqual(1)
             expect(student.skillLevel).toBeLessThanOrEqual(6)
         })
+
+        await UserModel.findByIdAndDelete(testCoach._id)
     })
 })
 
