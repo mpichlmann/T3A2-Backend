@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
             return res.status(401).send({ message: 'Invalid username or password' })
         }
 
-        const accessToken = jwt.sign({ userId: user._id, isAdmin: user.isAdmin, name: user.name }, process.env.ACCESS_TOKEN_SECRET)
+        const accessToken = jwt.sign({ userId: user._id, isAdmin: user.isAdmin, name: user.name }, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '6h'})
 
         const { password: excludedPassword, ...userWithoutPassword } = user.toObject()
         res.send({ user: userWithoutPassword, accessToken })

@@ -19,7 +19,7 @@ router.get('/:id', async (req, res) => {
     try {
         const skill = await SkillModel.findById(req.params.id)
         if (skill) {
-            res.send(skill)
+            res.status(200).send(skill)
         } else {
             res.status(404).send({ error: 'Skill not found'})
         }
@@ -33,7 +33,7 @@ router.get('/level/:level', async (req, res) => {
     try {
         const skills = await SkillModel.find({ level: req.params.level })
         if (skills.length > 0) {
-            res.send(skills)
+            res.status(200).send(skills)
         } else {
             res.status(404).send({ error: 'No skills found for the specified level' })
         }
@@ -55,10 +55,10 @@ router.post('/', checkAdminMiddleware, async (req, res) => {
 // Update a skill
 router.put('/:id', checkAdminMiddleware, async (req, res) => {
     try {
-        const skill = await StudentModel.findByIdAndUpdate(req.params.id, req.body, {new: true })
+        const skill = await SkillModel.findByIdAndUpdate(req.params.id, req.body, {new: true })
         if (skill) {
             skill.save()
-            res.send(skill)
+            res.status(200).send(skill)
         } else {
             res.status(404).send({ error: 'Skill not found'})
         }
@@ -70,7 +70,7 @@ router.put('/:id', checkAdminMiddleware, async (req, res) => {
 // Delete a skill
 router.delete('/:id', checkAdminMiddleware, async (req, res) => {
     try {
-        const student = await SkillModel.findByIdAndDelete(req.params.id)
+        const skill = await SkillModel.findByIdAndDelete(req.params.id)
         if (skill) {
             res.status(200).send({ message: 'Skill deleted successfully' })
         } else {

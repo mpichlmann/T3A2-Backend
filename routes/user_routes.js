@@ -7,7 +7,7 @@ const saltRounds = 10
 const router = Router()
 
 // Get all users
-router.get('/', async (req, res) => {
+router.get('/', checkAdminMiddleware, async (req, res) => {
     try {
         const users = await UserModel.find().select('-password')
         res.status(200).send(users);
@@ -32,9 +32,9 @@ router.get('/:id', async (req, res) => {
     try {
         const user = await UserModel.findById(req.params.id).select('-password')
         if (user) {
-            res.send(user)
+            res.status(200).send(user)
         } else {
-            res.status(404).send({ error: 'Student not found'})
+            res.status(404).send({ error: 'User not found'})
         }
     } catch (err) {
         res.status(500).send({ error: err.message} )
@@ -59,19 +59,6 @@ router.post('/', checkAdminMiddleware, async (req, res) => {
     }
 })
 
-// // Search for users 
-// router.get('/search/:name', async (req, res) => {
-//     try {
-//         const searchName = req.params.name
-
-//         const users = await UserModel.find({ name: { $regex: searchName, $options: 'i' } })
-
-//         res.status(200).send(users)
-//     } catch (error) {
-//         res.status(500).send({ error: error.message })
-//     }
-// })
-
 // Edit a user
 router.put('/:id', checkAdminMiddleware, async (req, res) => {
     try {
@@ -93,7 +80,7 @@ router.put('/:id', checkAdminMiddleware, async (req, res) => {
         if (user) {
             user.save()
             const { password: excludedPassword, ...userWithoutPassword } = user.toObject()
-            res.status(201).send(userWithoutPassword)
+            res.status(200).send(userWithoutPassword)
         } else {
             res.status(404).send({ error: 'User not found' })
         }
