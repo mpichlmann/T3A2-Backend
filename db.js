@@ -14,7 +14,7 @@ mongoose.connect(process.env.ATLAS_DB_URL)
 const studentSchema = new mongoose.Schema({
     name: {type: String, required: true},
     DOB: {type: Date, required: true},
-    skillLevel: {type: Number, min: 1, max: 6, required: true}
+    skillLevel: {type: Number, min: 0, max: 6, required: true}
 })
 const StudentModel = mongoose.model('Student', studentSchema)
 
@@ -33,7 +33,7 @@ const UserModel = mongoose.model('User', userSchema)
 // SKILL SCHEMA/MODEL
 const skillSchema = new mongoose.Schema({
     skillName: {type: String, required: true},
-    level: {type: Number, min: 1, max: 6, required: true}
+    level: {type: Number, min: 0, max: 3, required: true}
 })
 const SkillModel = mongoose.model('Skill', skillSchema)
 
