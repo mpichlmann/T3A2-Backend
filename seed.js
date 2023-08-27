@@ -53,7 +53,7 @@ const seedData = async () => {
             { skillName: 'Standing Back Handspring', levels: [3] },
             { skillName: 'BWO to Standing Back Handspring', levels: [3] },
             { skillName: 'Round Off Back Handspring Series', levels: [3] },
-            { skillName: 'Punch Front Tuck (Air Track to Landing Mat Option', levels: [3] }
+            { skillName: 'Punch Front Tuck (Air Track to Landing Mat Option)', levels: [3] }
         ]
         const sk = await SkillModel.insertMany(skillslist)
         console.log('Skills seeded')
