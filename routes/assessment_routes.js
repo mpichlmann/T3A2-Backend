@@ -1,12 +1,12 @@
 import { Router } from 'express'
 import { AssessmentModel } from '../db.js'
-import { checkAdminMiddleware, getUserId } from './admin.js'
+import { checkAdminMiddleware, getUserId, verifyUserMiddleware } from './admin.js'
 import jwt from 'jsonwebtoken'
 
 const router = Router()
 
 // Get all assessments
-router.get('/', async (req, res) => {
+router.get('/', verifyUserMiddleware, async (req, res) => {
     try {
         const assessments = await AssessmentModel.find()
             .populate('student', 'name') 
@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
 })
 
 // Get all assessments from a specific student
-router.get('/student/:studentId', async (req, res) => {
+router.get('/student/:studentId', verifyUserMiddleware, async (req, res) => {
     try {
         const assessments = await AssessmentModel.find({ student: req.params.studentId })
             .populate('student', 'name')
@@ -36,7 +36,7 @@ router.get('/student/:studentId', async (req, res) => {
 })
 
 // Get a specific assessment
-router.get('/:id', async (req, res) => {
+router.get('/:id', verifyUserMiddleware, async (req, res) => {
     try {
         const assessment = await AssessmentModel.findById(req.params.id)
             .populate('student', 'name') 

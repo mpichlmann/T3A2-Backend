@@ -1,13 +1,13 @@
 import { Router } from 'express'
 import { UserModel } from '../db.js'
 import bcrypt from 'bcrypt'
-import { checkAdminMiddleware } from './admin.js'
+import { checkAdminMiddleware, verifyUserMiddleware } from './admin.js'
 const saltRounds = 10
 
 const router = Router()
 
 // Get all users
-router.get('/', async (req, res) => {
+router.get('/', verifyUserMiddleware, async (req, res) => {
     try {
         const users = await UserModel.find().select('-password')
         res.status(200).send(users);
@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
 })
 
 // Search for users
-router.get('/results', async (req, res) => {
+router.get('/results', verifyUserMiddleware, async (req, res) => {
     try {
         const searchName = req.query.search
         const users = await UserModel.find({ name: { $regex: searchName, $options: 'i' } }).select('-password')
@@ -28,7 +28,7 @@ router.get('/results', async (req, res) => {
 })
 
 // Get a specific user
-router.get('/:id', async (req, res) => {
+router.get('/:id', verifyUserMiddleware, async (req, res) => {
     try {
         const user = await UserModel.findById(req.params.id).select('-password')
         if (user) {
