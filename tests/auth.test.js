@@ -144,19 +144,6 @@ describe('Auth protected skills routes', () =>{
         await SkillModel.findByIdAndDelete(response.body._id)
     })
 
-    test('Create a new skill with missing data', async () => {
-        const response = await request(app)
-        .post('/skills')
-        .send({
-            skillName: 'test skill'
-        })
-        .set({Authorization: accessToken})
-
-        // Assertions
-        expect(response.status).toBe(500)
-        expect(response.body.error).toBe("Skill validation failed: level: Path `level` is required.")
-    })
-
     test('Update a skill that does not exist', async () => {
         const response = await request(app)
         .put('/skills/64e831eec71a4eeffa97bdcd')

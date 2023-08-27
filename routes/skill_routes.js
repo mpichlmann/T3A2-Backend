@@ -31,7 +31,7 @@ router.get('/:id', async (req, res) => {
 // Get all skills of a specific level
 router.get('/level/:level', async (req, res) => {
     try {
-        const skills = await SkillModel.find({ level: req.params.level })
+        const skills = await SkillModel.find({ levels: { $in: [Number(req.params.level)]}})
         if (skills.length > 0) {
             res.status(200).send(skills)
         } else {

@@ -25,43 +25,35 @@ const seedData = async () => {
         
         // Skills data
         const skillslist = [
-            // level 1 skills
-            { skillName: 'Handstand', level: 0 },
-            { skillName: 'Cartwheel', level: 0 },
-            { skillName: 'Forward Roll', level: 0 },
-            { skillName: 'Backward Roll to Stand', level: 0 },
-            { skillName: 'Bridge', level: 0 },
-            { skillName: 'Handstand Flat Back', level: 0 },
-            { skillName: 'Round Off to Belly', level: 0 },
-            // level 2 skills
-            { skillName: 'Cartwheel', level: 1 },
-            { skillName: 'Backward Roll to Stand', level: 1 },
-            { skillName: 'Handstand Forward Roll', level: 1 },
-            { skillName: 'Back Bend', level: 1 },
-            { skillName: 'Kickover', level: 1 },
-            { skillName: 'Back Walkover', level: 1 },
-            { skillName: 'Handstand to Bridge', level: 1 },
-            { skillName: 'Front Limber', level: 1 },
-            { skillName: 'Front Walkover', level: 1 },
-            { skillName: 'Pop Handstand', level: 1 },
-            { skillName: 'Round Off', level: 1 },
+            // level 0/1 skills
+            { skillName: 'Handstand', levels: [0] },
+            { skillName: 'Cartwheel', levels: [0, 1] },
+            { skillName: 'Forward Roll', levels: [0] },
+            { skillName: 'Backward Roll to Stand', levels: [0, 1] },
+            { skillName: 'Bridge', levels: [0] },
+            { skillName: 'Handstand Flat Back', levels: [0] },
+            { skillName: 'Round Off to Belly', levels: [0] },
+            // level 1/2 skills
+            { skillName: 'Handstand Forward Roll', levels: [1, 2] },
+            { skillName: 'Back Bend', levels: [1] },
+            { skillName: 'Kickover', levels: [1] },
+            { skillName: 'Back Walkover', levels: [1, 2] },
+            { skillName: 'Handstand to Bridge', levels: [1] },
+            { skillName: 'Front Limber', levels: [1] },
+            { skillName: 'Front Walkover', levels: [1, 2] },
+            { skillName: 'Pop Handstand', levels: [1] },
+            { skillName: 'Round Off', levels: [1, 2] },
+            // level 2/3 skills
+            { skillName: 'Backward Roll to Front Support', levels: [2] },
+            { skillName: 'Back Limber', levels: [2] },
+            { skillName: 'Punch Dive Roll', levels: [2, 3] },
+            { skillName: 'Front Handspring', levels: [2, 3] },
             // level 3 skills
-            { skillName: 'Backward Roll to Front Support', level: 2 },
-            { skillName: 'Back Walkover', level: 2 },
-            { skillName: 'Back Limber', level: 2 },
-            { skillName: 'Front Walkover', level: 2 },
-            { skillName: 'Handstand Forward Roll', level: 2 },
-            { skillName: 'Round Off', level: 2 },
-            { skillName: 'Punch Dive Roll', level: 2 },
-            { skillName: 'Front Handspring', level: 2 },
-            // level 4 skills
-            { skillName: 'Punch Dive Roll', level: 3 },
-            { skillName: 'Front Handspring', level: 3 },
-            { skillName: 'Round Off Back Handspring', level: 3 },
-            { skillName: 'Standing Back Handspring', level: 3 },
-            { skillName: 'BWO to Standing Back Handspring', level: 3 },
-            { skillName: 'Round Off Back Handspring Series', level: 3 },
-            { skillName: 'Punch Front Tuck (Air Track to Landing Mat Option', level: 3 }
+            { skillName: 'Round Off Back Handspring', levels: [3] },
+            { skillName: 'Standing Back Handspring', levels: [3] },
+            { skillName: 'BWO to Standing Back Handspring', levels: [3] },
+            { skillName: 'Round Off Back Handspring Series', levels: [3] },
+            { skillName: 'Punch Front Tuck (Air Track to Landing Mat Option', levels: [3] }
         ]
         const sk = await SkillModel.insertMany(skillslist)
         console.log('Skills seeded')
