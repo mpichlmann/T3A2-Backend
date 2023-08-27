@@ -22,9 +22,11 @@ describe("Users Testing", () => {
 
         const response = await request(app).get(`/users/${testUser._id}`)
 
+        // Assertions
         expect(response.status).toBe(200)
         expect(response.body.username).toBe('testUser')
 
+        // Clean up
         await UserModel.findByIdAndDelete(testUser._id)
     })
 
@@ -32,6 +34,7 @@ describe("Users Testing", () => {
         const response = await request(app)
         .get('/users/64e831eec71a4eeffa97bdcd')
 
+        // Assertions
         expect(response.status).toBe(404)
         expect(response.body.error).toBe('User not found')
     })
@@ -42,6 +45,7 @@ describe("Users Testing", () => {
         const response = await request(app)
         .get(`/users/${errorThrowingString}`)
 
+        // Assertions
         expect(response.status).toBe(500)
         expect(response.body.error).toBe("Cast to ObjectId failed for value \"thisIsntEvenAnId\" (type string) at path \"_id\" for model \"User\"")
     })

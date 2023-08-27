@@ -165,6 +165,7 @@ describe('Auth protected skills routes', () =>{
         })
         .set({Authorization: accessToken})
 
+        // Assertions
         expect(response.status).toBe(404)
         expect(response.body.error).toBe('Skill not found')
     })
@@ -201,7 +202,9 @@ describe('Auth protected skills routes', () =>{
         .delete('/skills/64e831eec71a4eeffa97bdcd')
         .set({Authorization: accessToken})
 
+        // Assertions
         expect(response.status).toBe(404)
+        expect(response.body.error).toBe('Skill not found')
     })
 
     test('Delete a non skill object', async () => {
@@ -211,7 +214,9 @@ describe('Auth protected skills routes', () =>{
         .delete(`/skills/${errorThrowingString}`)
         .set({Authorization: accessToken})
 
+        // Assertions
         expect(response.status).toBe(500)
+        expect(response.body.error).toBe("Cast to ObjectId failed for value \"thisIsntEvenAnId\" (type string) at path \"_id\" for model \"Skill\"")
     })
 })
 
@@ -237,7 +242,9 @@ describe('Auth protected user routes', () => {
         .delete('/users/64e831eec71a4eeffa97bdcd')
         .set({Authorization: accessToken})
 
+        // Assertions
         expect(response.status).toBe(404)
+        expect(response.body.error).toBe('User not found')
     })
 })
 
@@ -271,6 +278,7 @@ describe('Auth protected assessment routes', () => {
         let student = response.body.student
         let skill = response.body.skill
 
+        // Assertions
         expect(response.status).toBe(201)
         expect(response.body.student).toBe(student)
         expect(response.body.skill).toBe(skill)

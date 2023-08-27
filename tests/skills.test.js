@@ -30,6 +30,7 @@ describe("Skills Testing", () => {
         const response = await request(app)
         .get('/skills/64e831eec71a4eeffa97bdcd')
 
+        // Assertions
         expect(response.status).toBe(404)
         expect(response.body.error).toBe('Skill not found')
     })
@@ -40,6 +41,7 @@ describe("Skills Testing", () => {
         const response = await request(app)
         .get(`/skills/${errorThrowingString}`)
 
+        // Assertions
         expect(response.status).toBe(500)
         expect(response.body.error).toBe("Cast to ObjectId failed for value \"thisIsntEvenAnId\" (type string) at path \"_id\" for model \"Skill\"")
     })
@@ -48,6 +50,7 @@ describe("Skills Testing", () => {
         const response = await request(app)
         .get('/skills/level/1')
 
+        // Assertions
         expect(response.status).toBe(200)
         expect(response.body).toBeInstanceOf(Array)
     })
@@ -56,6 +59,7 @@ describe("Skills Testing", () => {
         const response = await request(app)
         .get('/skills/level/10')
 
+        // Assertions
         expect(response.status).toBe(404)
         expect(response.body.error).toBe('No skills found for the specified level')
     })
@@ -64,6 +68,7 @@ describe("Skills Testing", () => {
         const response = await request(app)
         .get('/skills/level/badparameter')
 
+        // Assertions
         expect(response.status).toBe(500)
         expect(response.body.error).toBe("Cast to Number failed for value \"badparameter\" (type string) at path \"level\" for model \"Skill\"")
     })

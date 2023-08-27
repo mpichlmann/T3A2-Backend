@@ -5,6 +5,8 @@ import { AssessmentModel, StudentModel, SkillModel, UserModel } from '../db.js'
 describe('Assessments testing', () => {
     test('Get all Assessments', async () => {
         const res = await request(app).get('/assessments')
+
+        // Assertions
         expect(res.status).toBe(200)
         expect(res.header['content-type']).toMatch('json')
         expect(res.body).toBeInstanceOf(Array)
@@ -12,6 +14,7 @@ describe('Assessments testing', () => {
 
     test('Get assessments from a specific student', async () => {
 
+        // Create test data
         const testSpecificStudent = await StudentModel.create({
             name: 'Test Student', 
             DOB: '1991-01-01',
@@ -45,11 +48,13 @@ describe('Assessments testing', () => {
 
         const response = await request(app)
         .get(`/assessments/student/${testSpecificStudent._id}`)
+
+        // Assertions
         expect(response.status).toBe(200)
         expect(response.body[0].student._id).toBe(testSpecificStudent._id.toString())
         expect(response.body[0].doneBy._id).toBe(testSpecificUser._id.toString())
 
-
+        // Clean up
         await AssessmentModel.findByIdAndDelete(testSpecificAssessment._id)
         await StudentModel.findByIdAndDelete(testSpecificStudent._id)
         await SkillModel.findByIdAndDelete(testSpecificSkill._id)
@@ -59,6 +64,7 @@ describe('Assessments testing', () => {
 
     test('Get a specific assessment', async () => {
 
+        // Create test data
         const testSpecificStudent = await StudentModel.create({
             name: 'Test Student', 
             DOB: '1991-01-01',
@@ -93,8 +99,12 @@ describe('Assessments testing', () => {
         const response = await request(app)
         .get(`/assessments/${testSpecificAssessment._id}`)
 
+        // Assertions
         expect(response.status).toBe(200)
+        expect(response.body.doneBy._id).toBe(testSpecificUser._id.toString())
+        expect(response.body.student._id).toBe(testSpecificStudent._id.toString())
 
+        // Clean up
         await AssessmentModel.findByIdAndDelete(testSpecificAssessment._id)
         await StudentModel.findByIdAndDelete(testSpecificStudent._id)
         await SkillModel.findByIdAndDelete(testSpecificSkill._id)
