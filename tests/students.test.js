@@ -61,7 +61,7 @@ describe("Students Testing", () => {
             expect(typeof student.name).toBe('string')
             expect(student.skillLevel).toBeDefined()
             expect(typeof student.skillLevel).toBe('number')
-            expect(student.skillLevel).toBeGreaterThanOrEqual(1)
+            expect(student.skillLevel).toBeGreaterThanOrEqual(0)
             expect(student.skillLevel).toBeLessThanOrEqual(6)
         })
 

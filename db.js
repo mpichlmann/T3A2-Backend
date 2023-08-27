@@ -33,7 +33,7 @@ const UserModel = mongoose.model('User', userSchema)
 // SKILL SCHEMA/MODEL
 const skillSchema = new mongoose.Schema({
     skillName: {type: String, required: true},
-    level: {type: Number, min: 0, max: 3, required: true}
+    levels: [{type: Number, min: 0, max: 3}]
 })
 const SkillModel = mongoose.model('Skill', skillSchema)
 
