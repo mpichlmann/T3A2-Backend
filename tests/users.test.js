@@ -2,9 +2,29 @@ import app from  '../app.js'
 import request from 'supertest'
 import { UserModel } from '../db.js'
 
+let accessToken
+
+describe('Simulate a login', () => {
+    test('Login as elite admin', async () => {
+        const response = await request(app)
+            .post('/login')
+            .send({ username: 'eliteadmin', password: 'spameggs' })
+
+        // Assertions
+        expect(response.status).toBe(200)
+        expect(response.body.user.username).toBe('eliteadmin')
+        expect(response.body.accessToken).toBeDefined()
+        accessToken = response.body.accessToken
+        
+        // Clean up by removing the test user
+        
+    })
+})
+
+
 describe("Users Testing", () => {
     test('Search for users', async () => {
-        const response = await request(app).get('/users/results?search=a')
+        const response = await request(app).get('/users/results?search=a').set({Authorization: accessToken})
 
         // Assertions
         expect(response.status).toBe(200)
@@ -20,7 +40,7 @@ describe("Users Testing", () => {
             isAdmin: false
         })
 
-        const response = await request(app).get(`/users/${testUser._id}`)
+        const response = await request(app).get(`/users/${testUser._id}`).set({Authorization: accessToken})
 
         // Assertions
         expect(response.status).toBe(200)
@@ -32,7 +52,7 @@ describe("Users Testing", () => {
 
     test('Attempt to get a user that does not exist', async () => {
         const response = await request(app)
-        .get('/users/64e831eec71a4eeffa97bdcd')
+        .get('/users/64e831eec71a4eeffa97bdcd').set({Authorization: accessToken})
 
         // Assertions
         expect(response.status).toBe(404)
@@ -43,7 +63,7 @@ describe("Users Testing", () => {
         const errorThrowingString = 'thisIsntEvenAnId'
 
         const response = await request(app)
-        .get(`/users/${errorThrowingString}`)
+        .get(`/users/${errorThrowingString}`).set({Authorization: accessToken})
 
         // Assertions
         expect(response.status).toBe(500)

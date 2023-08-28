@@ -19,11 +19,11 @@ describe('Login Route', () => {
         })
         const response = await request(app)
             .post('/login')
-            .send({ username: 'testadmin', password: 'testpassword' })
+            .send({ username: 'eliteadmin', password: 'spameggs' })
 
         // Assertions
         expect(response.status).toBe(200)
-        expect(response.body.user.username).toBe('testadmin')
+        expect(response.body.user.username).toBe('eliteadmin')
         expect(response.body.accessToken).toBeDefined()
         accessToken = response.body.accessToken
         
@@ -212,7 +212,7 @@ describe('Auth protected user routes', () => {
         const testDeleteUser = await UserModel.create({
             username: 'testUser',
             password: 'testPassword',
-            name: 'Testy McUserson',
+            name: 'Testyz McUserson',
             isAdmin: false
         })
 

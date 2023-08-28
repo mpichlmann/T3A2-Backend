@@ -1,10 +1,37 @@
 import app from '../app.js'
 import request from 'supertest'
 import { AssessmentModel, StudentModel, SkillModel, UserModel } from '../db.js'
+import bcrypt from 'bcrypt'
+const saltRounds = 10
+
+let nonAdminToken
+let testCoach
+
+describe('Logging in as a non admin', () => {
+test('Login with valid credentials as a non admin', async () => {
+        // Create a test user
+        const hashedPassword = await bcrypt.hash('testpassword', saltRounds)
+        testCoach = await UserModel.create({
+            username: 'testcoach',
+            password: hashedPassword, 
+            name: 'Test Admin',
+            isAdmin: false,
+        })
+        const response = await request(app)
+            .post('/login')
+            .send({ username: 'testcoach', password: 'testpassword' })
+
+        // Assertions
+        expect(response.status).toBe(200)
+        expect(response.body.user.username).toBe('testcoach')
+        expect(response.body.accessToken).toBeDefined()
+        nonAdminToken = response.body.accessToken
+    })
+})
 
 describe('Assessments testing', () => {
     test('Get all Assessments', async () => {
-        const res = await request(app).get('/assessments')
+        const res = await request(app).get('/assessments').set({Authorization: nonAdminToken})
 
         // Assertions
         expect(res.status).toBe(200)
@@ -47,7 +74,7 @@ describe('Assessments testing', () => {
         })
 
         const response = await request(app)
-        .get(`/assessments/student/${testSpecificStudent._id}`)
+        .get(`/assessments/student/${testSpecificStudent._id}`).set({Authorization: nonAdminToken})
 
         // Assertions
         expect(response.status).toBe(200)
@@ -97,7 +124,7 @@ describe('Assessments testing', () => {
         })
 
         const response = await request(app)
-        .get(`/assessments/${testSpecificAssessment._id}`)
+        .get(`/assessments/${testSpecificAssessment._id}`).set({Authorization: nonAdminToken})
 
         // Assertions
         expect(response.status).toBe(200)
@@ -109,6 +136,7 @@ describe('Assessments testing', () => {
         await StudentModel.findByIdAndDelete(testSpecificStudent._id)
         await SkillModel.findByIdAndDelete(testSpecificSkill._id)
         await UserModel.findByIdAndDelete(testSpecificUser._id)
+        await UserModel.findByIdAndDelete(testCoach._id)
     })
 })
 
